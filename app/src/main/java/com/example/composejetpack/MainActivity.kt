@@ -25,6 +25,12 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun GreetingView() {
+    Greeting("Wallace", "Baldenebre")
+}
+
 @Composable
 fun Greeting(firstString: String, secondString: String) {
     Column(
@@ -39,10 +45,4 @@ fun Greeting(firstString: String, secondString: String) {
             Text(text = " $secondString!")
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    JetpackComposeTheme { Greeting("Wallace", "Baldenebre") }
 }
