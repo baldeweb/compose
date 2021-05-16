@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -48,17 +49,33 @@ fun Greeting(viewModel: SWViewModel?) {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .padding(20.dp)
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Image(
+            modifier = Modifier.clip(shape = RoundedCornerShape(8.dp)),
+            painter = painterResource(id = R.drawable.androidicon),
+            contentDescription = ""
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
         viewModel?.people?.observeAsState()?.value?.name?.let {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    modifier = Modifier.clip(shape = RoundedCornerShape(8.dp)),
-                    painter = painterResource(id = R.drawable.androidicon),
-                    contentDescription = ""
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(text = "Name: $it", style = MaterialTheme.typography.body1)
+            Text(text = "Name:", style = MaterialTheme.typography.h6)
+            Text(text = it, style = MaterialTheme.typography.body1)
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        viewModel?.people?.value?.films?.let {
+            Text(text = "Films", style = MaterialTheme.typography.h6)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, bottom = 4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                it.forEach { Text(text = it, style = MaterialTheme.typography.body2) }
             }
         }
     }
