@@ -3,13 +3,13 @@ package com.example.composejetpack.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composejetpack.JetpackComposeTheme
 import com.example.composejetpack.R
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: SWViewModel by viewModel()
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackComposeTheme {
-                Greeting("Wallace", "Baldenebre")
+                Greeting(viewModel)
             }
         }
         viewModel.getPeople()
@@ -36,11 +37,16 @@ class MainActivity : AppCompatActivity() {
 @Preview(showBackground = true)
 @Composable
 fun GreetingView() {
-    Greeting("Wallace", "Baldenebre")
+    Greeting(null)
 }
 
 @Composable
-fun Greeting(firstString: String, secondString: String) {
+fun Greeting(viewModel: SWViewModel?) {
+    val firstName =
+        viewModel?.people?.observeAsState()?.value?.name?.substringBefore(" ") ?: "Wallace"
+    val secondName =
+        viewModel?.people?.observeAsState()?.value?.name?.substringAfter(" ") ?: "Baldenebre"
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,8 +65,8 @@ fun Greeting(firstString: String, secondString: String) {
 
         Text(text = "Hello,", style = typography.subtitle1)
         Row {
-            Text(text = firstString, style = typography.h6)
-            Text(text = " $secondString!", style = typography.h6)
+            Text(text = firstName, style = typography.h6)
+            Text(text = " $secondName!", style = typography.h6)
         }
     }
 }
