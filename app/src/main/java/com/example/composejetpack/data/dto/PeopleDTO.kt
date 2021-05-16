@@ -12,7 +12,7 @@ data class PeopleDTO(
     @SerializedName("eye_color")
     var eyeColor: String? = "",
     @SerializedName("films")
-    var films: List<String>? = listOf(),
+    var films: ArrayList<String>? = arrayListOf(),
     @SerializedName("gender")
     var gender: String? = "",
     @SerializedName("hair_color")
