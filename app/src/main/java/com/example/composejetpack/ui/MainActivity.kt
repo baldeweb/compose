@@ -13,7 +13,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composejetpack.JetpackComposeTheme
@@ -42,31 +44,22 @@ fun GreetingView() {
 
 @Composable
 fun Greeting(viewModel: SWViewModel?) {
-    val firstName =
-        viewModel?.people?.observeAsState()?.value?.name?.substringBefore(" ") ?: "Wallace"
-    val secondName =
-        viewModel?.people?.observeAsState()?.value?.name?.substringAfter(" ") ?: "Baldenebre"
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxHeight()
+            .padding(20.dp)
     ) {
-        val typography = MaterialTheme.typography
-        Image(
-            modifier = Modifier.clip(shape = RoundedCornerShape(8.dp)),
-            painter = painterResource(id = R.drawable.androidicon),
-            contentDescription = ""
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = "Hello,", style = typography.subtitle1)
-        Row {
-            Text(text = firstName, style = typography.h6)
-            Text(text = " $secondName!", style = typography.h6)
+        viewModel?.people?.observeAsState()?.value?.name?.let {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    modifier = Modifier.clip(shape = RoundedCornerShape(8.dp)),
+                    painter = painterResource(id = R.drawable.androidicon),
+                    contentDescription = ""
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(text = "Name: $it", style = MaterialTheme.typography.body1)
+            }
         }
     }
 }
