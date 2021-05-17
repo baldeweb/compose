@@ -105,7 +105,7 @@ fun Greeting() {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
