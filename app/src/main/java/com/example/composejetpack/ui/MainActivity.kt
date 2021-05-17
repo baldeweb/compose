@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,9 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composejetpack.JetpackComposeTheme
@@ -67,15 +66,21 @@ fun Greeting(viewModel: SWViewModel?) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        viewModel?.people?.value?.films?.let {
-            Text(text = "Films", style = MaterialTheme.typography.h6)
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp, bottom = 4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                it.forEach { Text(text = it, style = MaterialTheme.typography.body2) }
+        ListMovies(viewModel)
+    }
+}
+
+@Composable
+fun ListMovies(viewModel: SWViewModel?) {
+    viewModel?.people?.observeAsState()?.value?.films?.let {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, bottom = 4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            items(items = it) {
+                Text(text = it, style = MaterialTheme.typography.body2)
             }
         }
     }
