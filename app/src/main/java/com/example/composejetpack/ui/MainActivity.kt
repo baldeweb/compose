@@ -3,21 +3,24 @@ package com.example.composejetpack.ui
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.example.composejetpack.JetpackComposeTheme
+import androidx.compose.ui.unit.sp
 import com.example.composejetpack.R
+import com.example.composejetpack.shapes
+import com.example.composejetpack.ui.components.softBlack
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -26,8 +29,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            JetpackComposeTheme {
-                Greeting(viewModel)
+            MaterialTheme {
+                Greeting()
             }
         }
         viewModel.getPeople()
@@ -37,36 +40,89 @@ class MainActivity : AppCompatActivity() {
 @Preview(showBackground = true)
 @Composable
 fun GreetingView() {
-    Greeting(null)
+    Greeting()
 }
 
 @Composable
-fun Greeting(viewModel: SWViewModel?) {
-    val firstName =
-        viewModel?.people?.observeAsState()?.value?.name?.substringBefore(" ") ?: "Wallace"
-    val secondName =
-        viewModel?.people?.observeAsState()?.value?.name?.substringAfter(" ") ?: "Baldenebre"
-
+fun Greeting() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxHeight()
+            .background(color = softBlack)
     ) {
-        val typography = MaterialTheme.typography
-        Image(
-            modifier = Modifier.clip(shape = RoundedCornerShape(8.dp)),
-            painter = painterResource(id = R.drawable.androidicon),
-            contentDescription = ""
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.androidicon),
+                    contentDescription = ""
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.androidicon),
+                    contentDescription = ""
+                )
+            }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Hello,", style = typography.subtitle1)
-        Row {
-            Text(text = firstName, style = typography.h6)
-            Text(text = " $secondName!", style = typography.h6)
+            Column(
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 16.dp)
+            ) {
+                Text(
+                    text = "Que bom te ver\naqui!\nVamos começar?",
+                    style = MaterialTheme.typography.h4,
+                    color = Color.White
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+                    enabled = true,
+                    onClick = { },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 6.dp, bottom = 6.dp),
+                        text = "Vamos!",
+                        color = softBlack
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+                    enabled = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { },
+                    border = BorderStroke(width = 2.dp, brush = SolidColor(Color.White))
+                ) {
+                    Text(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 6.dp, bottom = 6.dp),
+                        text = "Já sou cliente BTG",
+                        color = Color.White
+                    )
+                }
+            }
         }
     }
 }
