@@ -49,7 +49,7 @@ fun Greeting() {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(color = softBlack)
+            .background(color = Color.Black)
     ) {
         Column(
             modifier = Modifier
@@ -118,7 +118,7 @@ fun Greeting() {
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(top = 6.dp, bottom = 6.dp),
-                        text = "Já sou cliente BTG",
+                        text = "Já sou cliente",
                         color = Color.White
                     )
                 }
